@@ -31,15 +31,13 @@ async def main():
         await open_orm()
         client = aiohttp.ClientSession()
         async with Session() as session:
-            for set_id in batched(range(1, 100), 5):
-                coros_pers = []
+            for set_id in batched(range(101), 5):
+                coros_pers = [get_person(id, client) for id in set_id]
                 coros_plans = []
+                for_del = []
 
-                for id in set_id:
-                    coros_pers.append(get_person(id, client))
                 person = await asyncio.gather(*coros_pers)
 
-                for_del = []
                 for i, v in enumerate(person):
                     person_data = person[i]
                     if person_data is None:
@@ -55,7 +53,7 @@ async def main():
                 planet = await asyncio.gather(*coros_plans)
 
                 if person:
-                    for per, pl, id in list(zip(person, planet, set_id)):
+                    for per, pl, id in zip(person, planet, set_id):
                         session.add(Characters(
                             id=id,
                             birth_year=per["birth_year"],
