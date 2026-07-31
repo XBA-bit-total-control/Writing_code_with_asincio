@@ -31,7 +31,7 @@ async def main():
         await open_orm()
         client = aiohttp.ClientSession()
         async with Session() as session:
-            for set_id in batched(range(1, 4), 5):
+            for set_id in batched(range(1, 100), 5):
                 coros_pers = []
                 coros_plans = []
 
