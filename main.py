@@ -55,14 +55,14 @@ async def main():
                 for per, pl, id in zip(person.values(), planet, set_id):
                     stmt = insert(Characters).values(
                         id=id,
-                            birth_year=per["birth_year"],
-                            eye_color=per["eye_color"],
-                            gender=per["gender"],
-                            hair_color=per["hair_color"],
-                            homeworld=pl,
-                            mass=per["mass"],
-                            name=per["name"],
-                            skin_color=per["skin_color"]
+                        birth_year=per["birth_year"],
+                        eye_color=per["eye_color"],
+                        gender=per["gender"],
+                        hair_color=per["hair_color"],
+                        homeworld=pl,
+                        mass=per["mass"],
+                        name=per["name"],
+                        skin_color=per["skin_color"]
                     )
                     stmt = stmt.on_conflict_do_nothing(index_elements=["id"])
                     await session.execute(stmt)
