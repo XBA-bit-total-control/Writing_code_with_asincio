@@ -9,18 +9,18 @@ import os
 
 load_dotenv()
 
-DNS = (f"{os.getenv("DB_DRIVER")}://{os.getenv("DB_LOGIN")}:"
-       f"{os.getenv("DB_PASSWORD")}@{os.getenv("DB_HOST")}:"
-       f"{os.getenv("DB_PORT")}/{os.getenv("DB_DATABASE")}")
+DNS = (f"{os.getenv("POSTGRES_DRIVER")}://{os.getenv("POSTGRES_USER")}:"
+       f"{os.getenv("POSTGRES_PASSWORD")}@{os.getenv("POSTGRES_HOST")}:"
+       f"{os.getenv("POSTGRES_PORT")}/{os.getenv("POSTGRES_DB")}")
 
 engine = create_async_engine(DNS)
-Session = async_sessionmaker(bind=engine)
+Session = async_sessionmaker(bind=engine, expire_on_commit=False)
 
 Base = declarative_base()
 
 
 class Characters(Base):
-    __tablename__ = "персонажи"
+    __tablename__ = "characters"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     birth_year: Mapped[str] = mapped_column(String(10))
