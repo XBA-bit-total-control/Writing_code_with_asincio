@@ -67,8 +67,10 @@ async def main():
                     stmt = stmt.on_conflict_do_nothing(index_elements=["id"])
                     await session.execute(stmt)
                     print(f"Получен {per["name"]}", f"{(35 - len(per["name"])) * " "} - номер {id}")
+                await session.commit()
 
-            # Проверка на получение всех персонажей
+        # Проверка на получение всех персонажей
+        async with Session() as session:
             all_entries = await session.execute(select(func.count()).select_from(Characters))
             all_entries = all_entries.scalar()
             if all_entries == 82:
